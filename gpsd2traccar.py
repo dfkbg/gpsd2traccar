@@ -51,7 +51,7 @@ MIN_SPEED     =   2     # minimum speed to report (ignore GPS pos jitter) [km/h]
 
 USE_WALLCLOCK   = True  # synchronises reporting times to wall clock
 
-DEBUG = 0
+DEBUG = False
 
 # persistent global state
 prev_lat = 0
@@ -106,10 +106,10 @@ def full_report(pos):   # format full report
     # get battery data from FHEM
     try:
         resp = fhem_get("list bmv")
-        soc = re.search(r" SOC +([0-9]{2,3})", resp, flags=re.MULTILINE).groups()[0]
-        vs = re.search(r" VS +([0-9.]{2,6})", resp, flags=re.MULTILINE).groups()[0]
-        v = re.search(r" V +([0-9.]{2,6})", resp, flags=re.MULTILINE).groups()[0]
-        i = re.search(r" I +([0-9.-]{2,6})", resp, flags=re.MULTILINE).groups()[0]
+        soc = re.search(r" SOC +([0-9]{1,3})", resp, flags=re.MULTILINE).groups()[0]
+        vs = re.search(r" VS +([0-9.]{1,6})", resp, flags=re.MULTILINE).groups()[0]
+        v = re.search(r" V +([0-9.]{1,6})", resp, flags=re.MULTILINE).groups()[0]
+        i = re.search(r" I +([0-9.-]{1,6})", resp, flags=re.MULTILINE).groups()[0]
         fhemmsg = '&batt=%s&battery=%s&current=%s&batterystarter=%s'  % (soc, v, i, vs)
     except:
         fhemmsg = '&fhemerror=yes'
